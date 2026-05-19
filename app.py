@@ -170,10 +170,11 @@ with tab2:
             if len(responsaveis_count) > 0:
                 responsaveis_count.columns = ['Órgão', 'Quantidade']
                 responsaveis_count = responsaveis_count.astype({'Quantidade': 'int64'})
-                fig_resp = px.barh(
+                fig_resp = px.bar(
                     responsaveis_count,
                     x='Quantidade',
                     y='Órgão',
+                    orientation='h',
                     title="Top 10 Órgãos Responsáveis"
                 )
                 st.plotly_chart(fig_resp, use_container_width=True)
@@ -251,10 +252,11 @@ with tab3:
             if len(localidade_count) > 0:
                 localidade_count.columns = ['Localidade', 'Quantidade']
                 localidade_count = localidade_count.astype({'Quantidade': 'int64'})
-                fig_local = px.barh(
+                fig_local = px.bar(
                     localidade_count,
                     x='Quantidade',
                     y='Localidade',
+                    orientation='h',
                     title="Top 10 Localidades"
                 )
                 st.plotly_chart(fig_local, use_container_width=True)
