@@ -126,22 +126,24 @@ with tab2:
     col_graph1, col_graph2 = st.columns(2)
     
     with col_graph1:
-        status_count = df_analise['Status_Execução'].value_counts()
+        status_count = df_analise['Status_Execução'].value_counts().reset_index()
+        status_count.columns = ['Status', 'Quantidade']
         fig_status = px.bar(
-            status_count.reset_index(),
-            x='index',
-            y='Status_Execução',
+            status_count,
+            x='Status',
+            y='Quantidade',
             title="Distribuição por Status de Execução",
-            labels={'index': 'Status', 'Status_Execução': 'Quantidade'},
-            color='index'
+            color='Status'
         )
         st.plotly_chart(fig_status, use_container_width=True)
     
     with col_graph2:
+        status_count = df_analise['Status_Execução'].value_counts().reset_index()
+        status_count.columns = ['Status', 'Quantidade']
         fig_status_pie = px.pie(
-            status_count.reset_index(),
-            values='Status_Execução',
-            names='index',
+            status_count,
+            values='Quantidade',
+            names='Status',
             title="Proporção de Iniciativas por Status",
             hole=0.3
         )
@@ -151,25 +153,25 @@ with tab2:
     col_graph3, col_graph4 = st.columns(2)
     
     with col_graph3:
-        tipo_count = df_analise['Tipo_Atividade'].value_counts()
+        tipo_count = df_analise['Tipo_Atividade'].value_counts().reset_index()
+        tipo_count.columns = ['Tipo', 'Quantidade']
         fig_tipo = px.bar(
-            tipo_count.reset_index(),
-            x='Tipo_Atividade',
-            y='index',
+            tipo_count,
+            x='Tipo',
+            y='Quantidade',
             title="Tipo de Atividade (Contínua, Temporária, Esporádica)",
-            labels={'index': 'Quantidade', 'Tipo_Atividade': 'Tipo'},
-            color='Tipo_Atividade'
+            color='Tipo'
         )
         st.plotly_chart(fig_tipo, use_container_width=True)
     
     with col_graph4:
-        responsaveis_count = df_analise['Responsável'].value_counts().head(10)
+        responsaveis_count = df_analise['Responsável'].value_counts().head(10).reset_index()
+        responsaveis_count.columns = ['Órgão', 'Quantidade']
         fig_resp = px.barh(
-            responsaveis_count.reset_index(),
-            x='Responsável',
-            y='index',
-            title="Top 10 Órgãos Responsáveis",
-            labels={'Responsável': 'Quantidade', 'index': 'Órgão'}
+            responsaveis_count,
+            x='Quantidade',
+            y='Órgão',
+            title="Top 10 Órgãos Responsáveis"
         )
         st.plotly_chart(fig_resp, use_container_width=True)
     
@@ -225,25 +227,25 @@ with tab3:
     col_geo1, col_geo2 = st.columns(2)
     
     with col_geo1:
-        regiao_count = df_filtrado['Região'].value_counts()
+        regiao_count = df_filtrado['Região'].value_counts().reset_index()
+        regiao_count.columns = ['Região', 'Quantidade']
         fig_regiao = px.bar(
-            regiao_count.reset_index(),
-            x='index',
-            y='Região',
+            regiao_count,
+            x='Região',
+            y='Quantidade',
             title="Iniciativas por Região",
-            labels={'index': 'Região', 'Região': 'Quantidade'},
-            color='index'
+            color='Região'
         )
         st.plotly_chart(fig_regiao, use_container_width=True)
     
     with col_geo2:
-        localidade_count = df_filtrado['Localidade'].value_counts().head(10)
+        localidade_count = df_filtrado['Localidade'].value_counts().head(10).reset_index()
+        localidade_count.columns = ['Localidade', 'Quantidade']
         fig_local = px.barh(
-            localidade_count.reset_index(),
-            x='Localidade',
-            y='index',
-            title="Top 10 Localidades",
-            labels={'Localidade': 'Quantidade', 'index': 'Localidade'}
+            localidade_count,
+            x='Quantidade',
+            y='Localidade',
+            title="Top 10 Localidades"
         )
         st.plotly_chart(fig_local, use_container_width=True)
     
@@ -282,11 +284,12 @@ with tab4:
     
     if len(df_exp) > 0:
         st.subheader("Detalhes dos Responsáveis")
-        resp_detalhes = df_exp['Responsável'].value_counts()
+        resp_detalhes = df_exp['Responsável'].value_counts().reset_index()
+        resp_detalhes.columns = ['Órgão', 'Quantidade']
         fig_resp_det = px.pie(
-            resp_detalhes.reset_index(),
-            values='Responsável',
-            names='index',
+            resp_detalhes,
+            values='Quantidade',
+            names='Órgão',
             title="Distribuição de Responsabilidades",
             hole=0.3
         )
@@ -334,4 +337,3 @@ with st.sidebar:
     
     st.caption("📊 Dashboard para Programa Cidade Integrada v1.0")
     st.caption("Dados de políticas públicas e iniciativas sociais")
-
