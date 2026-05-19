@@ -40,6 +40,11 @@ else:
 if df is None:
     st.stop()
 
+# ==================== DEFINIÇÕES GLOBAIS ====================
+# Define variáveis que serão usadas em múltiplos lugares
+numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
+cat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+
 # ==================== INFORMAÇÕES BÁSICAS ====================
 col1, col2, col3, col4 = st.columns(4)
 with col1:
@@ -83,11 +88,12 @@ with tab3:
     col_plot1, col_plot2 = st.columns(2)
     
     with col_plot1:
-        numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
         if numeric_cols:
             col_x = st.selectbox("Eixo X", numeric_cols, key="x1")
             fig_hist = px.histogram(df, x=col_x, title=f"Distribuição de {col_x}")
             st.plotly_chart(fig_hist, use_container_width=True)
+        else:
+            st.warning("Nenhuma coluna numérica encontrada para histograma")
     
     with col_plot2:
         if len(numeric_cols) >= 2:
@@ -95,14 +101,17 @@ with tab3:
             y_col = st.selectbox("Eixo Y (Scatter)", numeric_cols, index=1 if len(numeric_cols)>1 else 0, key="y2")
             fig_scatter = px.scatter(df, x=x_col, y=y_col, title=f"{x_col} vs {y_col}")
             st.plotly_chart(fig_scatter, use_container_width=True)
+        else:
+            st.warning("Necessário pelo menos 2 colunas numéricas para scatter plot")
 
     # Gráfico de barras (se houver colunas categóricas)
-    cat_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
     if cat_cols:
         st.subheader("Gráficos de Barras")
         cat_col = st.selectbox("Coluna Categórica", cat_cols)
         fig_bar = px.histogram(df, x=cat_col, title=f"Contagem por {cat_col}")
         st.plotly_chart(fig_bar, use_container_width=True)
+    else:
+        st.warning("Nenhuma coluna categórica encontrada")
 
 with tab4:
     st.subheader("Filtros e Exploração")
@@ -111,19 +120,22 @@ with tab4:
     if cat_cols:
         filtro_col = st.selectbox("Filtrar por coluna", cat_cols)
         valores_unicos = df[filtro_col].dropna().unique()
-        valores_selecionados = st.multiselect("Valores", valores_unicos, default=valores_unicos[:3])
+        valores_selecionados = st.multiselect("Valores", valores_unicos, default=list(valores_unicos[:3]))
         
         if valores_selecionados:
             df_filtrado = df[df[filtro_col].isin(valores_selecionados)]
             st.write(f"**Dados filtrados:** {len(df_filtrado)} linhas")
             st.dataframe(df_filtrado)
+    else:
+        st.info("Nenhuma coluna categórica disponível para filtrar")
 
 # ==================== SIDEBAR ====================
 with st.sidebar:
     st.header("⚙️ Configurações")
     
-    st.subheader("Colunas Numéricas")
-    st.write(numeric_cols)
+    if numeric_cols:
+        st.subheader("Colunas Numéricas")
+        st.write(numeric_cols)
     
     if st.button("Limpar Cache"):
         st.cache_data.clear()
