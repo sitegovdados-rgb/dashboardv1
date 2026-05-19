@@ -165,15 +165,22 @@ with tab2:
         st.plotly_chart(fig_tipo, use_container_width=True)
     
     with col_graph4:
-        responsaveis_count = df_analise['Responsável'].value_counts().head(10).reset_index()
-        responsaveis_count.columns = ['Órgão', 'Quantidade']
-        fig_resp = px.barh(
-            responsaveis_count,
-            x='Quantidade',
-            y='Órgão',
-            title="Top 10 Órgãos Responsáveis"
-        )
-        st.plotly_chart(fig_resp, use_container_width=True)
+        try:
+            responsaveis_count = df_analise['Responsável'].dropna().value_counts().head(10).reset_index()
+            if len(responsaveis_count) > 0:
+                responsaveis_count.columns = ['Órgão', 'Quantidade']
+                responsaveis_count = responsaveis_count.astype({'Quantidade': 'int64'})
+                fig_resp = px.barh(
+                    responsaveis_count,
+                    x='Quantidade',
+                    y='Órgão',
+                    title="Top 10 Órgãos Responsáveis"
+                )
+                st.plotly_chart(fig_resp, use_container_width=True)
+            else:
+                st.warning("Sem dados de responsáveis para exibir.")
+        except Exception as e:
+            st.error(f"Erro ao gerar gráfico de responsáveis: {str(e)}")
     
     st.subheader("⚠️ Gaps de Informação")
     gaps = []
@@ -239,15 +246,22 @@ with tab3:
         st.plotly_chart(fig_regiao, use_container_width=True)
     
     with col_geo2:
-        localidade_count = df_filtrado['Localidade'].value_counts().head(10).reset_index()
-        localidade_count.columns = ['Localidade', 'Quantidade']
-        fig_local = px.barh(
-            localidade_count,
-            x='Quantidade',
-            y='Localidade',
-            title="Top 10 Localidades"
-        )
-        st.plotly_chart(fig_local, use_container_width=True)
+        try:
+            localidade_count = df_filtrado['Localidade'].dropna().value_counts().head(10).reset_index()
+            if len(localidade_count) > 0:
+                localidade_count.columns = ['Localidade', 'Quantidade']
+                localidade_count = localidade_count.astype({'Quantidade': 'int64'})
+                fig_local = px.barh(
+                    localidade_count,
+                    x='Quantidade',
+                    y='Localidade',
+                    title="Top 10 Localidades"
+                )
+                st.plotly_chart(fig_local, use_container_width=True)
+            else:
+                st.warning("Sem dados de localidades para exibir.")
+        except Exception as e:
+            st.error(f"Erro ao gerar gráfico de localidades: {str(e)}")
     
     st.subheader(f"Iniciativas Filtradas: {len(df_filtrado)}")
     st.dataframe(df_filtrado, use_container_width=True, height=400)
@@ -284,16 +298,23 @@ with tab4:
     
     if len(df_exp) > 0:
         st.subheader("Detalhes dos Responsáveis")
-        resp_detalhes = df_exp['Responsável'].value_counts().reset_index()
-        resp_detalhes.columns = ['Órgão', 'Quantidade']
-        fig_resp_det = px.pie(
-            resp_detalhes,
-            values='Quantidade',
-            names='Órgão',
-            title="Distribuição de Responsabilidades",
-            hole=0.3
-        )
-        st.plotly_chart(fig_resp_det, use_container_width=True)
+        try:
+            resp_detalhes = df_exp['Responsável'].dropna().value_counts().reset_index()
+            if len(resp_detalhes) > 0:
+                resp_detalhes.columns = ['Órgão', 'Quantidade']
+                resp_detalhes = resp_detalhes.astype({'Quantidade': 'int64'})
+                fig_resp_det = px.pie(
+                    resp_detalhes,
+                    values='Quantidade',
+                    names='Órgão',
+                    title="Distribuição de Responsabilidades",
+                    hole=0.3
+                )
+                st.plotly_chart(fig_resp_det, use_container_width=True)
+            else:
+                st.warning("Sem dados de responsáveis para exibir.")
+        except Exception as e:
+            st.error(f"Erro ao gerar gráfico de responsáveis: {str(e)}")
 
 # ========== TAB 5: DADOS BRUTOS ==========
 with tab5:
