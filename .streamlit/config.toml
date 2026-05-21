@@ -1,0 +1,19 @@
+[theme]
+primaryColor = "#FF6B35"
+backgroundColor = "#F8F9FA"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#2D3436"
+font = "sans serif"
+
+[client]
+showErrorDetails = true
+
+[logger]
+level = "info"
+
+[client]
+toolbarMode = "viewer"
+
+[layout]
+initialSidebarState = "expanded"
+maxUploadSize = 200
