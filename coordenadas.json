@@ -1,0 +1,14 @@
+{
+  "_comentario": "Coordenadas (lat, lon) das localidades atendidas pelo PCI. Edite este arquivo para adicionar novas localidades sem mexer no app.py.",
+  "Manguinhos": [-22.8808, -43.2515],
+  "Jacarézinho": [-22.8894, -43.2562],
+  "Tijuquinha": [-23.0031, -43.3130],
+  "Itanhangá": [-22.9922, -43.3155],
+  "Muzema": [-22.9961, -43.3276],
+  "Rio das Pedras": [-22.9902, -43.3364],
+  "Ipanema": [-22.9836, -43.2018],
+  "Cantagalo-Pavão-Pavãozinho": [-22.9790, -43.1950],
+  "CIEP Professor Lauro De Oliveira Lima": [-22.9910, -43.3350],
+  "Ciep Presidente João Goulart": [-22.9785, -43.1942],
+  "Campo do Abóbora - Jacarézinho": [-22.8894, -43.2562]
+}
