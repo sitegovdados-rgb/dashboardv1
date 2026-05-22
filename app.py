@@ -160,12 +160,21 @@ def load_default_file(file_path):
         return None
 
 @st.cache_data
-def load_social_data(file_path="dashboardsocialgeral.csv"):
-    return load_default_file(file_path)
+def load_social_data():
+    # Tenta ambas as convenções de nome (com e sem hífens)
+    for path in ["dashboardsocialgeral.csv", "dashboard-social-geral.csv"]:
+        df = load_default_file(path)
+        if df is not None:
+            return df
+    return None
 
 @st.cache_data
-def load_urbanism_data(file_path="dashboardurbanismogeral.csv"):
-    return load_default_file(file_path)
+def load_urbanism_data():
+    for path in ["dashboardurbanismogeral.csv", "dashboard-urbanismo-geral.csv"]:
+        df = load_default_file(path)
+        if df is not None:
+            return df
+    return None
 
 def load_uploaded_file(uploaded_file, key_prefix):
     if uploaded_file is None:
